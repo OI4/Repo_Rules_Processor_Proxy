@@ -29,3 +29,12 @@ The shown concept is not bound to DMN, you could also use another language to de
 ### Sequence Diagram
 
 ![Rules Engine Sequence Diagram](/diagrams/RulesEngine_Sequence.png)
+
+
+## Setup
+
+## Setup Drules/Knowledge is Everything Ecosystem
+1. https://hub.docker.com/r/jboss/business-central-workbench-showcase
+2. docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-workbench quay.io/kiegroup/business-central-workbench-showcase:latest
+3. https://hub.docker.com/r/jboss/kie-server-showcase
+4. docker run -p 8180:8080 -d --name kie-server --link jbpm-workbench:kie-wb quay.io/kiegroup/kie-server-showcase:latest
