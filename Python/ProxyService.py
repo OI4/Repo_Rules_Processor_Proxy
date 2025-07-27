@@ -1,14 +1,19 @@
 import requests
 import json
 import base64
+import time
 
-base_url = "http://localhost:8081/submodels/"
-submodel_id = "RuntimeData"
+base_url = "https://designer.aas-suite.de/aas-proxy/109/sm-repo"
+submodel_id = "UnVudGltZURhdGE"
+
+subscribed_property = "qualityState"
+fake_affected_property = "expectedDestination"
+fake_target_value = "Sperrbestand"
 
 
 def execute_rule(rule):
-    # todo: how to execute a rule?
-    print(f"Executing rule: {rule}")
+    if rule == "PostRule1":
+        PropertyService.update_property(fake_affected_property, fake_target_value)
 
 def update_property_value(property_name, property_value):
     pre_rules = DRulesService.get_pre_rules_for_property()
@@ -24,8 +29,7 @@ class PropertyService:
     def update_property(property_name, property_value):
         sample_string_bytes = submodel_id.encode("ascii")
         submodel_id_base64 = base64.urlsafe_b64encode(submodel_id.encode()).decode().rstrip("=")
-        response = requests.get(f"{base_url}{submodel_id_base64}/submodel-elements/{property_name}/$value")
-        ec_value = json.loads(response.content)
+        response = requests.post(f"{base_url}/submodels/{submodel_id_base64}/submodel-elements/{property_name}/$value", data=json.dumps(property_value), headers={'Content-Type': 'application/json'})
 
 
 class DRulesService:
@@ -39,3 +43,14 @@ class DRulesService:
     
 class RuleModel:
     pass    # todo: what's the drules datamodel?
+
+
+
+def main():
+    while True:
+        
+        time.sleep(5)
+    
+
+if __name__ == "__main__":
+    main()
