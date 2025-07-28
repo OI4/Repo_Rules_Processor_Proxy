@@ -1,6 +1,6 @@
 # Repo_Rules_Processor_Proxy
 
-This software component called "Repo_Rules_Processor_Proxy" is designed in the [Open Industry 4.0 Alliance](https://openindustry4.com/) project "Exemplary industry testing of partial aspects of the proactive Asset Administration Shell". If you are interested in contributing or more details, please reach out to Christian Heinrich. (Christian.Heinrich at openindustry4.com) 
+This software component called "Repo_Rules_Processor_Proxy" and the concept is created in a collaborative project of [IDTA](https://industrialdigitaltwin.org/) and [Open Industry 4.0 Alliance](https://openindustry4.com/) called "Exemplary industry testing of partial aspects of the proactive Asset Administration Shell". If you are interested in contributing or more details, please reach out.
 
 In this project we are creating a concept how to describe the behaviour of assets in their Asset Administration Shell. Therefore we are creating rules which are stored/linked in the AAS of the Asset, when the rule is evaluated to true, an action is triggered, like sending publishing an event or writing a value to a defined SubmodelElement or call an API.
 
