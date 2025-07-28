@@ -7,19 +7,26 @@ In this project we are creating a concept how to describe the behaviour of asset
 So we are able to bring the complex logic, which is nowadays (hard-)coded for example in MESs (Manufacturing Execution System) to a transparent and decentralized representation.
 
 This proxy uses in the first step the approach with describing the rules with DMN (Decision Model and Notation, see [wikipedia](https://en.wikipedia.org/wiki/Decision_Model_and_Notation)).
-Those DMN-files with the rules are stored in a File-SubmodelElement in a "Behaviour-Submodel" in the AAS of the Asset. This submodel is not standardized, yet.
+Those DMN-files with the rules are stored in a File-SubmodelElement in a "Rules"- or "Behaviour"-Submodel in the AAS of the Asset. This submodel is not standardized, yet.
 
-In the following sequence diagram the extraction of the DMN-files from the Submodel is encapsulated in the "RulesRepository".
-
-The shown concept is not bound to DMN, you could also use another language to describe the rules. You have to ensure, the rule, the RulesParser, which extracts the paths to referenced SubmodelElement, and the RulesEngine, which evaluates the rule, are fitting together.
+In the following sequence diagram the extraction of the DMN-files from this Submodel is encapsulated in the "RulesRepository".
 
 ### The concept in a nutshell:
 - There is a **Proxy** for the AAS-/submodel repository. The API_Client is not aware of the proxy, because the proxy has exact the same API-Endpoints like the AAS-/submodel-repository.
 - There are **Rules**. 
-    - A rule has at least one **SubmodelElementReferenceHook**, which is a reference to SubmodelElement in an AAS. Whenever this referenced SubmodelElement is touched (via a POST-, PUT-, DELETE- or maybe GET-request), the rule is relevant and must be evaluated.
-    - A rule can be a **PreRequestRule** or a **PostRequestRule**.
+    - A Rule has at least one **SubmodelElementReferenceHook**, which is a reference to SubmodelElement in an AAS. Whenever this referenced SubmodelElement is touched (via a POST-, PUT-, DELETE- or maybe GET-request), the rule is relevant and must be evaluated.
+    - A Rule can be a **PreRequestRule** or a **PostRequestRule**.
         - A PreRequestRule is evaluated before the proxy forwards the request from the API_Client to the repository. If one PreRequestRule is evaluated to false, the request is not forwared to the repository.
         - A PostRequestRule is evaluated after the proxy has forwarded the request to the repository and if the repository has HTTP response status code 2xx.
+    - A Rule has a **DMN-File** which holds decision tables.  
+        - *Structure*: A decision table is organized into columns and rows.
+        - *Input Columns*: These represent the conditions (e.g., "Customer Age", "Order Amount"). Each input has a specific data type (like number, string, or boolean). In our context the conditions are described as paths to SubmodelElements. 
+        - *Output Columns*: These represent the conclusions or results of the decision (e.g., "Discount Percentage", "Risk Level").
+        - *Rules*: Each row in the table represents a single rule. A rule connects specific input values or ranges to specific output values. For a rule to be "true," all its input conditions must be met.
+        - *Hit Policy*: A crucial part of the table is the "hit policy." It specifies what to do if multiple rules are true for a given set of inputs. Common policies include:
+            - Unique (U): Only one rule can match.
+            - First (F): The first matching rule, based on the row order, determines the output.
+            - Collect (C): A list of all matching outputs is returned.
 - There is a **RulesRepository**, which provides the rules for the requested SubmodelElement. The affected rules are selected by the SubmodelElementReferenceHook of the rule and the HTTP method. There can be many rules for one SubmodelElement. This RulesRepository is filled by the "Behaviour Submodels", which hold all rules.
 - There is a **DMN_RulesParser**, which extracts the paths to SubmodelElements with the current value of the SubmodelElement.
 - There is a **DMN_RulesEngine**, which evaluates the rule. This might be for example [Drools](https://drools.org/).
@@ -30,6 +37,7 @@ The shown concept is not bound to DMN, you could also use another language to de
 
 ![Rules Engine Sequence Diagram](/diagrams/RulesEngine_Sequence.png)
 
+The shown concept is not bound to DMN, you could also use another language to describe the rules. You have to ensure, the rule, the RulesParser, which extracts the paths to referenced SubmodelElement, and the RulesEngine, which evaluates the rule, are fitting together.
 
 ## Setup
 
