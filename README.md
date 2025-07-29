@@ -41,7 +41,18 @@ The shown concept is not bound to DMN, you could also use another language to de
 
 ## Setup
 
-## Setup Drules/Knowledge is Everything Ecosystem
+### Setup Python Version of Proxy
+1. Install Python 3. on your computer
+2. Navigate to folder /Python in your terminal
+3. Create a Folder "secrets" with the following two files
+    3.1. an empty file "__init__.py" to make this folder a Python package
+    3.2. a file "url_details.py" containing the following three variables
+        - base_url: the base url of your AAS repository
+        - submodel_id: the base64-encoded version of the submodel_id that you want to query
+        - header: the header information that has to be sent with each request to the AAS repository (including the ApiKey for the AAS designer)
+3. Run python ProxyService.py
+
+### Setup Drules/Knowledge is Everything Ecosystem
 1. https://hub.docker.com/r/jboss/business-central-workbench-showcase
 2. docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-workbench quay.io/kiegroup/business-central-workbench-showcase:latest
 3. https://hub.docker.com/r/jboss/kie-server-showcase
