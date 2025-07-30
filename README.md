@@ -43,7 +43,7 @@ The shown concept is not bound to DMN, you could also use another language to de
 
 ### Setup Python Version of Proxy
 1. Install Python 3. on your computer
-2. Navigate to folder /Python in your terminal
+2. Navigate to folder /Python in your terminal (on Windows you find the folder in PowerShell via 'Get-Command python', in the Bash via 'where python')
 3. Create a Folder "secrets" with the following two files
     3.1. an empty file "__init__.py" to make this folder a Python package
     3.2. a file "url_details.py" containing the following three variables
