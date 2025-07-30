@@ -57,3 +57,14 @@ The shown concept is not bound to DMN, you could also use another language to de
 2. docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-workbench quay.io/kiegroup/business-central-workbench-showcase:latest
 3. https://hub.docker.com/r/jboss/kie-server-showcase
 4. docker run -p 8180:8080 -d --name kie-server --link jbpm-workbench:kie-wb quay.io/kiegroup/kie-server-showcase:latest
+<<<<<<< HEAD
+=======
+
+
+1. localhost:8080/business-central
+2. Add Space > Add Project > Impmort Project
+3. Erstellen > Build and Install; Deployen
+4. View Deployment Details -> hier sollte der Remote Server und ein Häckchen beim DMN-Projekt vorhanden sein
+
+1. http://localhost:8180/kie-server/docs/
+>>>>>>> aedb27c (refactoring, implementation of AASRulesServiceImpl, added example AAS file with rules (can be used with the current implementation))
