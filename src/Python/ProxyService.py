@@ -5,7 +5,7 @@ import base64
 import time
 
 from model.RuleModel import RuleModel
-from service.AASRulesServiceImpl import AASRulesServiceImpl as RulesService
+from RulesRepository import RulesRepository
 from service.AASPropertyServiceImpl import AASPropertyService as PropertyService
 
 
@@ -19,10 +19,10 @@ def execute_rule(rule, property_value=None):
                 PropertyService.update_property(rule.output_property, value)
 
 def update_property_value(property_name, property_value):
-    pre_rules = RulesService.get_pre_rules_for_property()
+    pre_rules = RulesRepository.get_pre_rules_for_property()
     for rule in pre_rules:
         execute_rule(rule, property_value)
-    post_rules = RulesService.get_post_rules_for_property()
+    post_rules = RulesRepository.get_post_rules_for_property()
     for rule in post_rules:
         execute_rule(rule, property_value)
 

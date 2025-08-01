@@ -1,9 +1,9 @@
 from model.RuleModel import RuleModel
 
-class AASRulesServiceImpl:
+class RulesRepository:
     quality_check_rule = RuleModel(
-    output_property="StorageLocation",
-    mapping={True: "Lager", False: "Sperrbestand"}
+        output_property="StorageLocation",
+        mapping={True: "Lager", False: "Sperrbestand"}
     )
 
     pre_rules_db_inmemory = {
@@ -15,7 +15,7 @@ class AASRulesServiceImpl:
         }
     
     def get_pre_rules_for_property():
-        return AASRulesServiceImpl.pre_rules_db_inmemory.get("QualityCheckResult", [])
+        return RulesRepository.pre_rules_db_inmemory.get("QualityCheckResult", [])
 
     def get_post_rules_for_property():
-        return AASRulesServiceImpl.post_rules_db_inmemory.get("QualityCheckResult", [])
+        return RulesRepository.post_rules_db_inmemory.get("QualityCheckResult", [])
