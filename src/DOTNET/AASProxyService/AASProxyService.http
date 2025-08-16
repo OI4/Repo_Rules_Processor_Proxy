@@ -1,0 +1,6 @@
+@AASProxyService_HostAddress = http://localhost:5105
+
+GET {{AASProxyService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
