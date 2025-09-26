@@ -2,6 +2,8 @@
 using AasDemoapp.Models;
 using AasDemoapp.Services;
 using AasDemoapp.Services.impl;
+using Microsoft.EntityFrameworkCore.Query;
+using Action = AasDemoapp.Models.Action;
 
 namespace AasDemoapp.Controllers;
 
@@ -15,7 +17,7 @@ public class ProxyController : ControllerBase
 
     public ProxyController()
     {
-        _rulesEngineService = new FakeRulesEngineServiceImpl();
+        _rulesEngineService = new DroolsRulesEngineServiceImpl();
         _proxyService = new MetaLevelAASProxyServiceImpl();
         _rulesRepositoryService = new InMemoryRulesRepositoryServiceImpl();
     }
@@ -43,8 +45,10 @@ public class ProxyController : ControllerBase
             {
                 return; // todo: error message + correct status code here
             }
-            // todo: execute action
-            // todo-discuss: kommt hier wirklich die Aktion von Drools zurück, oder wird die lediglich in Drools selbst ausgeführt, und man muss dann einen Diff Check machen
+            Action resultAction = result.ActionToPerform;
+            _proxyService.UpdatePropertyValue(resultAction.TargegSubmodelName, resultAction.TargetPropertyName,
+                resultAction.TargetPropertyValue);
+
         }
     }
 

@@ -10,6 +10,7 @@ public class RuleEvaluationResult
 
 public class Action
 {
+    public String TargegSubmodelName { get; set; }
     public String TargetPropertyValue{ get; set; }
     public String TargetPropertyName { get; set; }
 }

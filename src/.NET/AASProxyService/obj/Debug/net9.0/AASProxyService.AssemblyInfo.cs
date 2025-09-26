@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AASProxyService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0850acbdde31c183ea705d6383b6b6105963fd66")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85fcc5570e03fb1b90de08eea03a1db714f5b05d")]
 [assembly: System.Reflection.AssemblyProductAttribute("AASProxyService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AASProxyService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

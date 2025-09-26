@@ -1,0 +1,75 @@
+@startuml RulesEngine_Sequence
+actor API_Client
+API_Client -> Repo_Rules_Processor_Proxy : HandleRequest(method, path_to_SME, payload)
+activate Repo_Rules_Processor_Proxy
+
+Repo_Rules_Processor_Proxy -> RulesRepository : GetAffectedPreRequestRules(path_to_SME)
+activate RulesRepository
+RulesRepository --> Repo_Rules_Processor_Proxy : PreRequestRules[]
+deactivate RulesRepository
+
+loop for each PreRequestRule in PreRequestRules
+    Repo_Rules_Processor_Proxy -> DMN_RulesParser : ExtractPathsToSMEs(PreRequestRule)
+    activate DMN_RulesParser
+    DMN_RulesParser --> Repo_Rules_Processor_Proxy : PathsToSMEs[]       
+    deactivate DMN_RulesParser
+
+    Repo_Rules_Processor_Proxy -> SM_Repository : GetValuesForPathsToSMEs(path_to_SMEs[])
+    activate SM_Repository
+    SM_Repository --> Repo_Rules_Processor_Proxy : ValuesForPathsToSMEs[]
+    deactivate SM_Repository
+
+    Repo_Rules_Processor_Proxy -> DMN_RulesEngine : EvaluateRule(Rule, valuesForPathsToSMEs[])
+    activate DMN_RulesEngine
+    DMN_RulesEngine --> Repo_Rules_Processor_Proxy : EvaluationResult(IsTrue, Action)
+    deactivate DMN_RulesEngine
+    
+    alt if EvaluationResult.IsFalse
+        Repo_Rules_Processor_Proxy --> API_Client : HttpResponse(notAllowedDueToPreRequestRule)            
+    end        
+end
+
+Repo_Rules_Processor_Proxy -> SM_Repository : HandleRequest(method, path_to_SME, payload)
+activate SM_Repository
+SM_Repository --> Repo_Rules_Processor_Proxy : HttpResponse
+deactivate SM_Repository
+
+Repo_Rules_Processor_Proxy -> RulesRepository : GetAffectedPostRequestRules(path_to_SME)
+activate RulesRepository
+RulesRepository --> Repo_Rules_Processor_Proxy : PostRequestRules[]
+deactivate RulesRepository
+
+
+loop for each PostRequestRule in PostRequestRules
+    Repo_Rules_Processor_Proxy -> DMN_RulesParser : ExtractPathsToSMEs(PostRequestRule)
+    activate DMN_RulesParser
+    DMN_RulesParser --> Repo_Rules_Processor_Proxy : PathsToSMEs[]       
+    deactivate DMN_RulesParser
+
+    Repo_Rules_Processor_Proxy -> SM_Repository : GetValuesForPathsToSMEs(path_to_SMEs[])
+    activate SM_Repository
+    SM_Repository --> Repo_Rules_Processor_Proxy : ValuesForPathsToSMEs[]
+    deactivate SM_Repository
+
+    Repo_Rules_Processor_Proxy -> DMN_RulesEngine : EvaluateRule(Rule, valuesForPathsToSMEs[])
+    activate DMN_RulesEngine
+    DMN_RulesEngine --> Repo_Rules_Processor_Proxy : EvaluationResult(IsTrue, Action)
+    deactivate DMN_RulesEngine
+    
+    alt if EvaluationResult.IsTrue
+        Repo_Rules_Processor_Proxy -> Action : Execute()
+        Action --> Repo_Rules_Processor_Proxy : ActionResult    
+    end
+ 
+end
+
+
+alt if HttpResponse is 20x
+    Repo_Rules_Processor_Proxy -> API_Client : HttpResponse(success)
+else if HttpResponse is not 20x 
+    Repo_Rules_Processor_Proxy -> API_Client : HttpResponse(error)
+end
+
+deactivate Repo_Rules_Processor_Proxy
+
+@enduml
